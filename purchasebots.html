@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Discord Members</title>
+</head>
+<body>
+    <h1>Buy Discord Members</h1>
+    
+    <form id="purchase-form">
+        <label for="invite-link">Discord Invite Link:</label>
+        <input type="text" id="invite-link" name="invite_link" required><br><br>
+
+        <label for="service">Service Type:</label>
+        <select id="service" name="service">
+            <option value="Offline Members">Offline Members</option>
+            <option value="Online Members">Online Members</option>
+        </select><br><br>
+
+        <label for="amount">Number of Members:</label>
+        <input type="number" id="amount" name="amount" min="1" required><br><br>
+
+        <button type="submit">Buy Members</button>
+    </form>
+
+    <p id="response"></p>
+
+    <script>
+        document.getElementById('purchase-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const inviteLink = document.getElementById('invite-link').value;
+            const service = document.getElementById('service').value;
+            const amount = document.getElementById('amount').value;
+
+            const response = await fetch('/process-purchase', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ invite_link: inviteLink, service: service, amount: amount })
+            });
+            
+            const data = await response.json();
+            document.getElementById('response').textContent = data.message;
+        });
+    </script>
+</body>
+</html>
